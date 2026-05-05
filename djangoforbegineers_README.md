@@ -127,3 +127,128 @@ If not → run normally
 
 python manage.py migrate pages 0002 --fake
 Migration → ❌ DB unchanged → django_migrations updated
+
+
+A Django "view" is a Python function that accepts a Web request and returns a Web response. When a Web page is requested, Django automatically creates an HttpRequest object with metadata about the request. The view returns an HttpResponse object
+
+render() is just a helper (shortcut) function that:
+
+👉 Combines 3 things into 1 step:
+
+Takes a request
+Loads a template (HTML file)
+Returns a response (what user sees in browser)
+
+🟢 1. SimpleTestCase (Lightweight Testing)
+
+👉 Use this when:
+
+❌ You DO NOT need database
+✅ You are testing:
+Views (basic response)
+URLs
+Templates
+Logic functions
+
+🔴 2. TestCase (Database Testing)
+
+👉 Use this when:
+
+✅ You NEED database
+Example:
+Creating users
+Saving models
+Querying data
+
+Django extends unittest
+
+🔹 Test Classes
+🟢 SimpleTestCase
+No DB
+Fast
+Views, URLs, templates
+🔵 TestCase
+Uses DB
+Most commonly used
+🟡 TransactionTestCase
+Real DB transactions
+Rare usage
+🔴 LiveServerTestCase
+Runs live server
+Used with browser automation
+
+class based views and generic class based views
+
+Django gives you 3 styles:
+
+Function-Based Views (FBV)
+def about(request):
+    return render(request, "pages/about.html")
+
+Class-Based Views (CBV)
+from django.views import View
+from django.shortcuts import render
+
+class AboutView(View):
+    def get(self, request):
+        return render(request, "pages/about.html")
+
+Generic Class-Based Views (GCBV)
+from django.views.generic import ListView
+
+class PostListView(ListView):
+    model = Post
+    template_name = "posts/list.html"
+
+from django.views.generic import DetailView
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "posts/detail.html"
+
+Built-in Generic Views (Must Know List)
+
+Start with these:
+
+TemplateView → static pages
+ListView → list data
+DetailView → single object
+CreateView → create object
+UpdateView → update
+DeleteView → delete
+
+Attributes:
+
+model
+template_name / get_template_names
+context_object_name / get_context_object_name
+queryset / get_queryset
+ordering
+paginate_by
+fields
+success_url / get_success_url
+pk_url_kwarg
+slug_field & slug_url_kwarg
+
+
+Request
+   ↓
+dispatch()
+   ↓
+get()
+   ↓
+get_queryset()
+   ↓
+get_context_data()
+   ↓
+render template
+
+
+Template Inheritance
+
+{% extends 'base.html' %}
+
+{% block content %}{% endblock %}
+Anything within the block tags can be overridden in a child template.
+
+Named Urls:
